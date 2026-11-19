@@ -1,0 +1,45 @@
+%% 依据提交 1e0fe20497ede31346957636d1ee38a2e61f69d0 中的 package.json 依赖声明
+%% 层级按职责归纳，箭头统一表示使用方指向被依赖方
+flowchart TB
+  subgraph layer0["交互入口"]
+    n10["coding-agent"]
+  end
+  subgraph layer1["会话与服务"]
+    n5["agent"]
+    n4["durable"]
+    n6["session-backends/sqlite-node"]
+    n8["client"]
+    n9["server"]
+  end
+  subgraph layer2["模型访问与通信协议"]
+    n3["ai"]
+    n7["protocol"]
+  end
+  subgraph layer3["通用支撑"]
+    n0["telemetry"]
+    n1["chord"]
+    n2["tui"]
+  end
+  n3 --> n0
+  n4 --> n1
+  n4 --> n3
+  n5 --> n1
+  n5 --> n3
+  n5 --> n0
+  n6 --> n3
+  n6 --> n5
+  n7 --> n1
+  n8 --> n1
+  n8 --> n7
+  n9 --> n1
+  n9 --> n5
+  n9 --> n7
+  n10 --> n1
+  n10 --> n5
+  n10 --> n3
+  n10 --> n2
+  n10 -. 开发依赖 .-> n8
+  n10 -. 开发依赖 .-> n7
+  n10 -. 开发依赖 .-> n9
+  note["版本差异：schema、codemode、mcp、env
+未作为 packages 下的独立包存在"]
