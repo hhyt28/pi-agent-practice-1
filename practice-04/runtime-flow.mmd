@@ -1,0 +1,12 @@
+flowchart LR
+    CLI["coding-agent"] --> AG["agent"]
+    AG --> AI["ai"]
+    AI --> REMOTE["远程模型服务"]
+    REMOTE -->|"文字回复或工具调用"| AI
+    AI --> AG
+    AG -->|"执行工具调用"| READ["本地 read 工具"]
+    FILE["practice4.txt"] -->|"文件内容"| READ
+    READ -->|"工具结果加入上下文"| AG
+    AG -->|"最终回复"| CLI
+    classDef plain fill:#fff,stroke:#222,color:#111,stroke-width:1px;
+    class CLI,AG,AI,REMOTE,READ,FILE plain;
