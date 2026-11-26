@@ -1,0 +1,30 @@
+sequenceDiagram
+    participant U as 用户
+    participant C as 交互与会话层
+    participant G as Agent执行层
+    participant M as 模型请求层（含远端边界）
+    participant R as read工具
+    U->>C: defaultEditor.onSubmit(text)
+    C->>C: AgentSession.prompt → _runAgentPrompt（跨文件）
+    C->>G: Agent.prompt(messages)
+    G->>G: runPromptMessages → runAgentLoop → runLoop
+    G->>M: streamAssistantResponse → streamFunction(model,llmContext,...)
+    M->>M: sdk.ts streamFn → ModelRuntime.streamSimple → provider.streamSimple
+    Note over M: DeepSeek默认适配器：openai-completions.streamSimple → stream
+    M->>M: 适配器 → 远端：client.chat.completions.create(params,requestOptions)
+    M-->>M: 远端 → 适配器：流式响应，含read工具调用
+    M-->>G: AssistantMessage中的toolCall
+    G->>R: executeToolCalls → executePreparedToolCall → prepared.tool.execute
+    R->>R: ops.readFile(absolutePath) → fsReadFile(path)
+    Note over R: handoff.txt读入Buffer，再buffer.toString("utf-8")
+    R-->>G: AgentToolResult（content中为文件内容）
+    G->>G: createToolResultMessage；currentContext.messages.push(result)
+    G->>M: 再次streamFunction（带工具调用和toolResult）
+    M->>M: 适配器 → 远端：第二轮请求
+    M-->>M: 远端 → 适配器：最终回答的流式响应
+    M-->>G: 流式模型事件与AssistantMessage
+    G-->>C: processEvents → Agent订阅 → AgentSession._handleAgentEvent
+    C->>C: session.subscribe → handleEvent(message_update/message_end)
+    C->>C: streamingComponent.updateContent；ui.requestRender
+    C-->>U: 显示待办和完整启动命令
+    Note over C: message_end时AgentSession调用SessionManager.appendMessage保存消息

@@ -1,0 +1,18 @@
+flowchart TB
+    A["A结束：Pi已读到并回答handoff.txt中的启动命令"]
+    A --> L1["退出；用本地dist/cli.js -c启动"]
+    A --> R1["输入/new（本实验在恢复问答后执行）"]
+    L1 --> L2["main.ts：createSessionManager → SessionManager.continueRecent"]
+    L2 --> L3["选中最近会话文件；_setSessionFile → loadEntriesFromFile"]
+    L3 --> L4["sdk.ts：buildSessionContext；agent.state.messages = existingSession.messages"]
+    L4 --> L5["输入同一条README起草请求"]
+    L5 --> L6["runAgentLoop：已有历史消息 + 本次用户消息；再经转换请求模型"]
+    L6 --> L7["实际：未调用工具，回答包含npm run demo -- --profile lr-309d68eb"]
+    R1 --> R2["onSubmit → handleClearCommand → runtimeHost.newSession"]
+    R2 --> R3["SessionManager.create；teardownCurrent；createRuntime；apply"]
+    R3 --> R4["新的聊天历史，不继承A的工具结果和回复"]
+    R4 --> R5["输入完全相同的README起草请求"]
+    R5 --> R6["本次用户消息 + 系统/工具配置等；没有A的聊天历史"]
+    R6 --> R7["实际：未调用工具，说明缺少交接单与启动命令"]
+    classDef plain fill:#fff,stroke:#222,color:#111,stroke-width:1px;
+    class A,L1,L2,L3,L4,L5,L6,L7,R1,R2,R3,R4,R5,R6,R7 plain;

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1950" height="2380" viewBox="0 0 1950 2380"><defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#222"/></marker></defs><rect width="1950" height="2380" fill="white"/><g font-family="SimSun,serif" fill="#111">
+<text x="975" y="29" font-size="21" text-anchor="middle">图1　读取 handoff.txt 的一轮交互（2次模型调用，1次read）</text>
+<rect x="10" y="55" width="140" height="48" fill="white" stroke="#222" stroke-width="1.3"/>
+<text x="80" y="85" font-size="18" text-anchor="middle">用户</text>
+<path d="M80 103V2350" stroke="#888" stroke-dasharray="5 5" fill="none"/>
+<rect x="320" y="55" width="140" height="48" fill="white" stroke="#222" stroke-width="1.3"/>
+<text x="390" y="85" font-size="18" text-anchor="middle">交互与会话层</text>
+<path d="M390 103V2350" stroke="#888" stroke-dasharray="5 5" fill="none"/>
+<rect x="690" y="55" width="140" height="48" fill="white" stroke="#222" stroke-width="1.3"/>
+<text x="760" y="85" font-size="18" text-anchor="middle">Agent执行层</text>
+<path d="M760 103V2350" stroke="#888" stroke-dasharray="5 5" fill="none"/>
+<rect x="1080" y="55" width="140" height="48" fill="white" stroke="#222" stroke-width="1.3"/>
+<text x="1150" y="85" font-size="18" text-anchor="middle">模型请求层</text>
+<path d="M1150 103V2350" stroke="#888" stroke-dasharray="5 5" fill="none"/>
+<rect x="1470" y="55" width="140" height="48" fill="white" stroke="#222" stroke-width="1.3"/>
+<text x="1540" y="85" font-size="18" text-anchor="middle">read工具</text>
+<path d="M1540 103V2350" stroke="#888" stroke-dasharray="5 5" fill="none"/>
+<path d="M80 195H390" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="235" y="154" font-size="16" text-anchor="middle">defaultEditor.onSubmit(text)</text>
+<path d="M390 262H432V296H390" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="445" y="262" font-size="15" text-anchor="start">interactive-mode.ts → agent-session.ts</text>
+<text x="445" y="285" font-size="15" text-anchor="start">AgentSession.prompt()</text>
+<text x="445" y="308" font-size="15" text-anchor="start">→ _runAgentPrompt()</text>
+<path d="M390 395H760" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="575" y="354" font-size="16" text-anchor="middle">this.agent.prompt(messages)</text>
+<path d="M760 462H802V496H760" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="815" y="462" font-size="15" text-anchor="start">agent.ts → agent-loop.ts</text>
+<text x="815" y="485" font-size="15" text-anchor="start">runPromptMessages() → runAgentLoop()</text>
+<text x="815" y="508" font-size="15" text-anchor="start">→ runLoop()</text>
+<path d="M760 595H1150" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="955" y="554" font-size="16" text-anchor="middle">streamAssistantResponse()</text>
+<text x="955" y="577" font-size="16" text-anchor="middle">→ streamFunction(model, llmContext, ...)</text>
+<path d="M1150 662H1192V696H1150" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="1205" y="662" font-size="15" text-anchor="start">sdk.ts streamFn → ModelRuntime.streamSimple()</text>
+<text x="1205" y="685" font-size="15" text-anchor="start">→ provider.streamSimple()</text>
+<path d="M1150 762H1192V796H1150" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="1205" y="762" font-size="15" text-anchor="start">DeepSeek默认适配器：openai-completions.ts</text>
+<text x="1205" y="785" font-size="15" text-anchor="start">streamSimple() → stream()</text>
+<path d="M1150 862H1192V896H1150" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="1205" y="862" font-size="15" text-anchor="start">适配器 → 远端模型（HTTP请求）</text>
+<text x="1205" y="885" font-size="15" text-anchor="start">client.chat.completions.create(...)</text>
+<path d="M1150 962H1192V996H1150" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="1205" y="962" font-size="15" text-anchor="start">远端模型 → 适配器（流式响应）</text>
+<text x="1205" y="985" font-size="15" text-anchor="start">第一轮返回read工具调用</text>
+<path d="M1150 1095H760" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<text x="955" y="1054" font-size="16" text-anchor="middle">AssistantMessage.content中的toolCall</text>
+<path d="M760 1195H1540" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="1150" y="1154" font-size="16" text-anchor="middle">executeToolCalls() → executePreparedToolCall()</text>
+<text x="1150" y="1177" font-size="16" text-anchor="middle">→ prepared.tool.execute(...)</text>
+<path d="M1540 1262H1582V1296H1540" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="1595" y="1262" font-size="15" text-anchor="start">read.ts：ops.readFile(path)</text>
+<text x="1595" y="1285" font-size="15" text-anchor="start">→ fsReadFile(path)</text>
+<text x="1595" y="1308" font-size="15" text-anchor="start">Buffer → toString(&quot;utf-8&quot;)</text>
+<path d="M1540 1395H760" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<text x="1150" y="1354" font-size="16" text-anchor="middle">AgentToolResult：文件内容</text>
+<path d="M760 1462H802V1496H760" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="815" y="1462" font-size="15" text-anchor="start">createToolResultMessage()</text>
+<text x="815" y="1485" font-size="15" text-anchor="start">currentContext.messages.push(result)</text>
+<path d="M760 1595H1150" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="955" y="1554" font-size="16" text-anchor="middle">第二次streamFunction(...)</text>
+<text x="955" y="1577" font-size="16" text-anchor="middle">上下文新增工具调用和toolResult</text>
+<path d="M1150 1662H1192V1696H1150" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="1205" y="1662" font-size="15" text-anchor="start">适配器 → 远端模型：第二轮请求</text>
+<text x="1205" y="1685" font-size="15" text-anchor="start">远端模型 → 适配器：流式回答</text>
+<path d="M1150 1795H760" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<text x="955" y="1754" font-size="16" text-anchor="middle">流式事件 / 最终AssistantMessage</text>
+<path d="M760 1895H390" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<text x="575" y="1854" font-size="16" text-anchor="middle">processEvents() → Agent订阅</text>
+<text x="575" y="1877" font-size="16" text-anchor="middle">AgentSession._handleAgentEvent()</text>
+<path d="M390 1962H432V1996H390" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="445" y="1962" font-size="15" text-anchor="start">session.subscribe(...) → handleEvent(event)</text>
+<text x="445" y="1985" font-size="15" text-anchor="start">message_update / message_end</text>
+<path d="M390 2062H432V2096H390" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="445" y="2062" font-size="15" text-anchor="start">streamingComponent.updateContent(...)</text>
+<text x="445" y="2085" font-size="15" text-anchor="start">ui.requestRender()</text>
+<path d="M390 2195H80" fill="none" stroke="#222" stroke-width="1.3" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<text x="235" y="2154" font-size="16" text-anchor="middle">显示待办和完整启动命令</text>
+<path d="M390 2262H432V2296H390" fill="none" stroke="#222" stroke-width="1.3" marker-end="url(#a)"/>
+<text x="445" y="2262" font-size="15" text-anchor="start">消息结束后：SessionManager.appendMessage(...)</text>
+<text x="445" y="2285" font-size="15" text-anchor="start">保存消息，供之后恢复会话</text>
+<text x="975" y="2372" font-size="15" text-anchor="middle">同层自调用表示合并后的跨文件调用；模型请求层内标出适配器与远端边界。</text>
+</g></svg>
